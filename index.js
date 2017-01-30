@@ -46,6 +46,9 @@ module.exports = function (root, cb) {
     var refsRoot = path.join(root, 'refs')
     var walker = walk.walk(refsRoot, {followLinks: false})
     walker.on('file', function (wroot, fileStat, next) {
+      if (fileStat.name === '.swp') {
+        return next();
+      }
       var refpath = path.join(wroot.substr(refsRoot.length), fileStat.name)
       refpath = slash(refpath)
       readText(path.join('refs', refpath), function (err, data) {
